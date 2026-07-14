@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig, type Plugin } from 'vite';
 
-const BASE_PATH = '/streetfightrush/';
+const BASE_PATH = './';
 
 function publicAssetBasePathPlugin(): Plugin {
   return {
@@ -16,7 +16,7 @@ function publicAssetBasePathPlugin(): Plugin {
 
       const rewritten = code.replace(
         /([`'"])\/(characters|backgrounds|images|icons|sounds|audio|music)\//g,
-        `$1${BASE_PATH}$2/`,
+        '$1./$2/',
       );
 
       if (rewritten === code) {
