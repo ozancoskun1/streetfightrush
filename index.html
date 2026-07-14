@@ -5,6 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
     <title>STREET FIGHT RUSH</title>
     <script>
+      // GitHub Pages serves this project under /streetfightrush/.
+      // Redirect absolute public asset paths such as /characters/... to the repo base path.
+      (function () {
+        const githubPagesBase = '/streetfightrush/';
+        const isProjectPage = window.location.pathname.startsWith(githubPagesBase);
+        const assetBase = isProjectPage ? githubPagesBase : '/';
+        const publicAssetRoots = [
+          '/characters/',
+          '/backgrounds/',
+          '/images/',
+          '/icons/',
+          '/sounds/',
+          '/audio/',
+          '/music/'
+        ];
+
+        const normalizeAssetUrl = (value) => {
+          if (typeof value !== 'string' || assetBase === '/') return value;
+          if (value.startsWith(assetBase)) return value;
+          if (!publicAssetRoots.some((root) => value.startsWith(root))) return value;
+          return `${assetBase}${value.slice(1)}`;
+        };
+
+        try {
+          const originalSetAttribute = Element.prototype.setAttribute;
+          Element.prototype.setAttribute = function (name, value) {
+            const normalizedName = String(name).toLowerCase();
+            if (normalizedName === 'src' || normalizedName === 'poster') {
+              value = normalizeAssetUrl(value);
+            }
+            return originalSetAttribute.call(this, name, value);
+          };
+
+          const patchUrlProperty = (prototype, propertyName) => {
+            const descriptor = Object.getOwnPropertyDescriptor(prototype, propertyName);
+            if (!descriptor || !descriptor.get || !descriptor.set) return;
+
+            Object.defineProperty(prototype, propertyName, {
+              configurable: descriptor.configurable,
+              enumerable: descriptor.enumerable,
+              get: descriptor.get,
+              set(value) {
+                descriptor.set.call(this, normalizeAssetUrl(value));
+              }
+            });
+          };
+
+          patchUrlProperty(HTMLImageElement.prototype, 'src');
+          patchUrlProperty(HTMLMediaElement.prototype, 'src');
+          patchUrlProperty(HTMLSourceElement.prototype, 'src');
+        } catch (error) {
+          console.warn('Asset path compatibility warning:', error);
+        }
+      })();
+    </script>
+    <script>
       // Fix "Cannot set property fetch of #<Window> which has only a getter" error in sandbox/iframe environments
       (function() {
         try {
@@ -31,4 +87,3 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
