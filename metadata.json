@@ -1,0 +1,6 @@
+{
+  "name": "STREET FIGHT RUSH",
+  "description": "A high-octane 2D street fighting game. Fight, dodge, guard, and punch your way to the top with multiple characters, rich skill upgrades, and real-time chest rewards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

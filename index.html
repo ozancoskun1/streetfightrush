@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>STREET FIGHT RUSH</title>
+    <script>
+      // Fix "Cannot set property fetch of #<Window> which has only a getter" error in sandbox/iframe environments
+      (function() {
+        try {
+          const originalFetch = window.fetch;
+          let currentFetch = originalFetch;
+          Object.defineProperty(window, 'fetch', {
+            get() {
+              return currentFetch;
+            },
+            set(val) {
+              currentFetch = val;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          console.warn('Sandbox fetch setter warning:', e);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
